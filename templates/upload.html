@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Thumbnail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main {
+      display: flex;
+      width: 90%;
+      max-width: 1200px;
+      background-color: #ffffffcc;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      padding: 40px;
+      animation: slideIn 1s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .left-section,
+    .right-section {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .left-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .preview-box {
+      border: 3px dashed #aaa;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      width: 500px;
+      height: 350px;
+      animation: zoomIn 1s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .preview-box input[type="file"] {
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .preview-box img {
+      border-radius: 10px;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .right-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn {
+      width: 200px;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    }
+
+    .back-btn {
+      background: #333;
+    }
+
+    .back-btn:hover {
+      background: #444;
+    }
+
+    #previewText {
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <!-- Form across both sections -->
+    <form action="/upload" method="POST" enctype="multipart/form-data" style="display: flex; width: 100%;">
+      <!-- Left Section -->
+      <div class="left-section">
+        <div class="preview-box" id="previewContainer">
+          <input type="file" id="imageInput" name="thumbnail" accept="image/*" onchange="previewImage()" required />
+          <span id="previewText">No thumbnail uploaded</span>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="right-section">
+        <button type="submit" class="btn">Show Analysis</button>
+        <button type="button" class="btn back-btn" onclick="window.location.href='/'">Back to Home</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function previewImage() {
+      const fileInput = document.getElementById("imageInput");
+      const file = fileInput.files[0];
+      const previewContainer = document.getElementById("previewContainer");
+      const previewText = document.getElementById("previewText");
+
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewText.style.display = "none";
+
+        const existingImg = previewContainer.querySelector("img");
+        if (existingImg) existingImg.remove();
+
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        previewContainer.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+
+</html>
